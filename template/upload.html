@@ -1,0 +1,16 @@
+{% extends "template/frame.html" %}
+
+{% block content %}
+	<form id='add-answer' role='form' enctype="multipart/form-data" method='POST' action='{{ url }}'>
+	    	<div class='container-fluid'>
+	    		<div class='form-group col-lg-12'>
+		    		<label for="title">Image File:</label>
+		    		<input type="file" name="file" accept="image/*">
+		  	</div>
+	    		<div class='form-group col-lg-12'>
+		    		<button type="button" class='btn btn-primary' onclick="history.go(-1)">Cancel</button>
+		  		<input type='submit' class='btn btn-primary' value='Upload' />
+	  		</div>
+		</div>    	
+	</form>
+{% endblock %}

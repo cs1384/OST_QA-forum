@@ -3,6 +3,9 @@
 {% block content %}
 	<form id='add-question' role='form' method='POST' action='/editq'>
 	    	<div class='container-fluid'>
+	    		<div class='form-group col-lg-12 text-right'>
+	    			<a href="/load" target="_blank">upload image</a>
+	    		</div>
 		    	<div class='form-group col-lg-12'>
 		    		<label for="title">Title:</label>
 		    		<input type="text" class="form-control" maxlength="256" name="title" value="{{ question.title }}">

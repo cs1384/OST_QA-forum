@@ -23,6 +23,13 @@ handlers:
 - url: /vote
   script: vote.application
   login: required
+  
+- url: /(upload|load)
+  script: upload.application
+  login: required
+
+- url: /serve*
+  script: upload.application
 
 - url: /
   script: view.application

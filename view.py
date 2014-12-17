@@ -2,6 +2,7 @@ import webapp2
 import jinja2
 import os
 import models
+import re
 
 NUM_IN_A_PAGE = 10
 
@@ -43,7 +44,6 @@ class View(webapp2.RequestHandler):
             next = int(page) + 1
             show = qs[(max-10):max]
         
-        
         # show = qs
         # temp = show[0].key.id()
         '''
@@ -55,25 +55,49 @@ class View(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('template/viewAll.html')
         self.response.write(template.render(template_values))
         
-
     def viewAQ(self, qid):
         qid = long(qid)
         qid = int(qid)
         question = models.Question.get_by_id(qid)
+        qcontent = self.processContent(question.content)
         # question = models.Question.get_by_id(6410839984701440)
         query = models.Answer.query(models.Answer.qid==qid)
         fetch = query.fetch()
         show = sorted(fetch,key=lambda x: abs(x.vote),reverse=True)
+        acontent = []
+        for ans in show:
+            acontent.append(self.processContent(ans.content))
         
-        template_values = {'question': question, 'answers':show}
+        template_values = {'question': question, 'answers':show, 'qcontent': qcontent, 'acontent': acontent}
         template = JINJA_ENVIRONMENT.get_template('template/viewAQ.html')
         self.response.write(template.render(template_values))
         '''
-        template_values = {'message': len(show)}
+        template_values = {'message': qcontent}
         template = JINJA_ENVIRONMENT.get_template('template/message.html')
         self.response.write(template.render(template_values))
         '''
         
+    
+    def processContent(self, content):
+        images = re.findall(r"(https?://[^\s]*\.jpg|https?://[^\s]*\.png|https?://[^\s]*\.gif)",content)
+        for i in images:
+            # print i
+            replace = ' <img src="'+ i + '"/> '
+            # print replace
+            content = content.replace(' '+i+' ',replace)
+        links = re.findall(r"https?://[^\s]*\.[^\s\"]*",content)
+        for l in links:
+            if l not in images:
+                replace = ' <a href="'+ l + '">' + l + '</a> '
+                # print l
+                # print replace
+                content = content.replace(' '+l+' ',replace)
+        return content
+        
+            
+        
+    
+    
 application = webapp2.WSGIApplication([
     ('/view', View),
     ('/', View),

@@ -3,6 +3,9 @@
 {% block content %}
 	<form id='add-answer' role='form' method='POST' action='/edita'>
 	    	<div class='container-fluid'>
+	    		<div class='form-group col-lg-12 text-right'>
+	    			<a href="/load" target="_blank">upload image</a>
+	    		</div>
 	    		<div class='form-group col-lg-12'>
 	    			You will be answering question: 
 	    			"<strong>{{ question.title|truncate(75,True) }}</strong>" 

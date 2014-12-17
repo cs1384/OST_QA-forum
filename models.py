@@ -36,9 +36,13 @@ class Answer(ndb.Model):
     modifyTime = ndb.DateTimeProperty(auto_now=True)
 
 
-class PhotoItem(ndb.Model):
-    name = ndb.StringProperty()
-    photo = blobstore.BlobReferenceProperty()
+class Image(ndb.Model):
+    blob = ndb.BlobProperty(required=True)
+    blobKey = ndb.BlobKeyProperty(required=True)
+    author = ndb.UserProperty()
+    # blobKey = ndb.BlobKeyProperty(required=True)
+    servingUrl = ndb.StringProperty()
+    createTime = ndb.DateTimeProperty(auto_now_add=True)
 
 
 

@@ -1,0 +1,28 @@
+{% extends "template/frame.html" %}
+
+{% block content %}
+	<form id='add-answer' role='form' method='POST' action='/createa'>
+	    	<div class='container-fluid'>
+	    		<div class='form-group col-lg-12'>
+	    			You will be answering question: 
+	    			"<strong>{{ question.title|truncate(75,True) }}</strong>" 
+	    		</div>
+		    	<div class='form-group col-lg-12'>
+		    		<label for="title">Name:</label>
+		    		<input type="text" class="form-control" maxlength="256" name="name" placeholder="Name of your answer">
+		  	</div>
+		  	
+		  	<input type="hidden" class="form-control" name="qid" value="{{ question.key.id() }}">
+	
+		  	<div class='form-group col-lg-12'>
+		  		<label for="title">Content:</label>
+		  		<textarea class="form-control" rows="6" placeholder='Your full answer here' name='content' id='review'></textarea>
+		  	</div>
+			
+		    	<div class='form-group col-lg-12'>
+		    		<button type="button" class='btn btn-primary' onclick="location.href='/view?qid={{ question.key.id() }}'">Cancel</button>
+		  		<input type='submit' class='btn btn-primary' value='Submit' />
+	  		</div>
+	  	</div>
+    </form>
+{% endblock %}

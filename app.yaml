@@ -1,0 +1,30 @@
+application: tinsostproject
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /(createa|createq)
+  script: create.application
+  login: required
+
+- url: /view
+  script: view.application
+
+- url: /delete
+  script: delete.application
+  login: required
+  
+- url: /(editq|edita)
+  script: edit.application
+  login: required
+
+- url: /
+  script: view.application
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest

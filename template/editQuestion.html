@@ -1,0 +1,33 @@
+{% extends "template/frame.html" %}
+
+{% block content %}
+	<form id='add-question' role='form' method='POST' action='/editq'>
+	    	<div class='container-fluid'>
+		    	<div class='form-group col-lg-12'>
+		    		<label for="title">Title:</label>
+		    		<input type="text" class="form-control" maxlength="256" name="title" value="{{ question.title }}">
+		  	</div>
+	
+			<input type="hidden" name="qid" value="{{ question.key.id() }}">
+			
+		  	<div class='form-group col-lg-12'>
+		    		<label for="title">Tags (separated by semicolon):</label>
+		    		{% if tags == ''  %}
+		    			<input type="text" class="form-control" name="tags" placeholder="Tags of your question">
+		    		{% else %}
+		    			<input type="text" class="form-control" name="tags" value="{{ tags }}">
+		    		{% endif %}
+		  	</div>
+	
+		  	<div class='form-group col-lg-12'>
+		  		<label for="title">Content:</label>
+		  		<textarea class="form-control" rows="6" value="{{ question.content }}" name='content'></textarea>
+		  	</div>
+			
+		    	<div class='form-group col-lg-12'>
+		    		<button type="button" class='btn btn-primary' onclick="location.href='/view?qid={{ question.key.id() }}'">Cancel</button>
+		  		<input type='submit' class='btn btn-primary' value='Submit' />
+	  		</div>
+	  	</div>
+    </form>
+{% endblock %}

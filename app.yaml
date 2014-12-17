@@ -19,6 +19,10 @@ handlers:
 - url: /(editq|edita)
   script: edit.application
   login: required
+  
+- url: /vote
+  script: vote.application
+  login: required
 
 - url: /
   script: view.application

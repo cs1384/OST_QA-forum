@@ -19,6 +19,7 @@ class Delete(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('template/message.html')
             self.response.write(template.render(template_values))
         elif qid != '':
+            qid = long(qid)
             qid = int(qid)
             user = users.get_current_user()
             question = models.Question.get_by_id(qid)
@@ -28,8 +29,13 @@ class Delete(webapp2.RequestHandler):
                 self.response.write(template.render(template_values))
             else:
                 question.key.delete()
+                query = models.Answer.query(models.Answer.qid==question.key.id())
+                fetch = query.fetch()
+                for answer in fetch:
+                    answer.key.delete()
                 self.redirect('/view')
         elif aid != '':
+            aid = long(aid)
             aid = int(aid)
             user = users.get_current_user()
             answer = models.Answer.get_by_id(aid)

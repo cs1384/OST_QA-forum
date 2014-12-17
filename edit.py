@@ -18,6 +18,7 @@ class EditQuestion(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('template/message.html')
             self.response.write(template.render(template_values))
         else:
+            qid = long(qid)
             qid = int(qid)
             question = models.Question.get_by_id(qid)
             if question.author != user:
@@ -33,23 +34,31 @@ class EditQuestion(webapp2.RequestHandler):
                 self.response.write(template.render(template_values))
     def post(self):
         qid = self.request.get('qid')
+        qid = long(qid)
         qid = int(qid)
-        question = models.Question.get_by_id(qid)
-        question.title = self.request.get('title')
-        question.content = self.request.get('content')
-        temp = self.request.get('tags')
-        token = temp.split(";")
-        tags = []
-        for str in token:
-            if str != '':
-                str = str.strip()
-                tags.append(str)
-        question.tags = tags
-        question.put()
-        qid = question.key.id()
-        temp = repr(int(qid))
-        url = '/view?qid=' + temp
-        self.redirect(url)
+        title = self.request.get('title')
+        content = self.request.get('content')
+        if title == '' or content == '':
+            template_values = {'message': 'Both title and content cannot be empty!'}
+            template = JINJA_ENVIRONMENT.get_template('template/message.html')
+            self.response.write(template.render(template_values))
+        else:
+            question = models.Question.get_by_id(qid)
+            question.title = title
+            question.content = content
+            temp = self.request.get('tags')
+            token = temp.split(";")
+            tags = []
+            for str in token:
+                if str != '':
+                    str = str.strip()
+                    tags.append(str)
+            question.tags = tags
+            question.put()
+            qid = question.key.id()
+            temp = repr(int(qid))
+            url = '/view?qid=' + temp
+            self.redirect(url)
         
 class EditAnswer(webapp2.RequestHandler):
     def get(self):
@@ -60,6 +69,7 @@ class EditAnswer(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('template/message.html')
             self.response.write(template.render(template_values))
         else:
+            aid = long(aid)
             aid = int(aid)
             answer = models.Answer.get_by_id(aid)
             if answer.author != user:
@@ -70,19 +80,28 @@ class EditAnswer(webapp2.RequestHandler):
                 qid = answer.qid
                 qid = int(qid)
                 question = models.Question.get_by_id(qid)
-                template_values = {'answer': answer, 'quesiton': question}
+                template_values = {'answer': answer, 'question': question}
                 template = JINJA_ENVIRONMENT.get_template('template/editAnswer.html')
                 self.response.write(template.render(template_values))
     def post(self):
         aid = self.request.get('aid')
+        aid = long(aid)
         aid = int(aid)
-        answer = models.Answer.get_by_id(aid)
-        answer.name = self.request.get('name')
-        answer.content = self.request.get('content')
-        qid = answer.qid
-        temp = repr(int(qid))
-        url = '/view?qid=' + temp
-        self.redirect(url)
+        name = self.request.get('name')
+        content = self.request.get('content')
+        if name == '' or content == '':
+            template_values = {'message': 'Both name and content cannot be empty!'}
+            template = JINJA_ENVIRONMENT.get_template('template/message.html')
+            self.response.write(template.render(template_values))
+        else:
+            answer = models.Answer.get_by_id(aid)
+            answer.name = name
+            answer.content = content
+            answer.put()
+            qid = answer.qid
+            temp = repr(int(qid))
+            url = '/view?qid=' + temp
+            self.redirect(url)
         
         
 application = webapp2.WSGIApplication([

@@ -21,9 +21,11 @@
 		<br><br>
 		<div class='col-lg-12'>
 			<p class='lead'>{{ question.content }}
-				<a style="font-size:70%" href="/vote?qid={{ question.key.id() }}"><strong>VOTE UP</strong></a>
+				<a style="font-size:70%" href="/vote?eval=up&qid={{ question.key.id() }}"><strong>VOTE UP</strong></a>
 				<span style="font-size:70%"><strong>|</strong></span>
-				<a style="font-size:70%" href="/vote?qid={{ question.key.id() }}"><strong>VOTE DOWN</strong></a>
+				<a style="font-size:70%" href="/vote?eval=down&qid={{ question.key.id() }}"><strong>VOTE DOWN</strong></a>
+				<span style="font-size:70%"><strong>|</strong></span>
+				<a style="font-size:70%" href="/vote?eval=cancel&qid={{ question.key.id() }}"><strong>TAKEBACK</strong></a>
 				<!-- onclick="location.href=\'http://cs.nyu.edu/cgi-bin/cgiwrap/~ytl264/tin -->
 			</p>
 		</div>
@@ -58,9 +60,11 @@
 			<!-- no tag -->
 			<div class='col-lg-12'>
 				<p class='lead'>{{ answer.content }}
-					<a style="font-size:70%" href="/vote?aid={{ answer.key.id() }}"><strong>VOTE UP</strong></a>
+					<a style="font-size:70%" href="/vote?eval=up&aid={{ answer.key.id() }}"><strong>VOTE UP</strong></a>
 					<span style="font-size:70%"><strong>|</strong></span>
-					<a style="font-size:70%" href="/vote?aid={{ answer.key.id() }}"><strong>VOTE DOWN</strong></a>
+					<a style="font-size:70%" href="/vote?eval=down&aid={{ answer.key.id() }}"><strong>VOTE DOWN</strong></a>
+					<span style="font-size:70%"><strong>|</strong></span>
+					<a style="font-size:70%" href="/vote?eval=cancel&aid={{ answer.key.id() }}"><strong>TAKEBACK</strong></a>
 					<!-- onclick="location.href=\'http://cs.nyu.edu/cgi-bin/cgiwrap/~ytl264/tin -->
 				</p>
 			</div>

@@ -1,4 +1,5 @@
 from google.appengine.api import users
+from sets import Set
 import webapp2
 import jinja2
 import os
@@ -33,6 +34,8 @@ class createQuestion(webapp2.RequestHandler):
                     str = str.strip()
                     tags.append(str)
             question.tags = tags
+            question.voteup = []
+            question.votedown = []
             question.put()
             qid = question.key.id()
             temp = repr(int(qid))
@@ -53,6 +56,7 @@ class createAnswer(webapp2.RequestHandler):
         if qid == '':
             self.redirect('/view')
         else:
+            qid = long(qid)
             qid = int(qid)
             question = models.Question.get_by_id(qid)
             '''
@@ -78,7 +82,10 @@ class createAnswer(webapp2.RequestHandler):
             answer.author = users.get_current_user()
             answer.content = content
             answer.name = name
+            qid = long(qid)
             answer.qid = int(qid)
+            answer.voteup = []
+            answer.votedown = []
             answer.put()
             temp = repr(int(qid))
             url = '/view?qid=' + temp

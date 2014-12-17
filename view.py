@@ -57,12 +57,13 @@ class View(webapp2.RequestHandler):
         
 
     def viewAQ(self, qid):
+        qid = long(qid)
         qid = int(qid)
         question = models.Question.get_by_id(qid)
         # question = models.Question.get_by_id(6410839984701440)
         query = models.Answer.query(models.Answer.qid==qid)
         fetch = query.fetch()
-        show = sorted(fetch,key=lambda x: abs(x.vote))
+        show = sorted(fetch,key=lambda x: abs(x.vote),reverse=True)
         
         template_values = {'question': question, 'answers':show}
         template = JINJA_ENVIRONMENT.get_template('template/viewAQ.html')

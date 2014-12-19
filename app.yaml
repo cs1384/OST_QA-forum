@@ -28,7 +28,7 @@ handlers:
   script: upload.application
   login: required
 
-- url: /serve*
+- url: /serve/*
   script: upload.application
 
 - url: /

@@ -7,7 +7,8 @@ from google.appengine.ext.webapp import blobstore_handlers
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-    upload_url = blobstore.create_upload_url('/upload')
+    upload_url_rpc = blobstore.create_upload_url_async('/upload')
+    upload_url = upload_url_rpc.get_result()
     self.response.out.write('<html><body>')
     self.response.out.write('<form action="%s" method="POST" enctype="multipart/form-data">' % upload_url)
     self.response.out.write("""Upload File: <input type="file" name="file"><br> <input type="submit"
@@ -20,10 +21,13 @@ class UploadHandler(blobstore_handlers.BlobstoreUploadHandler):
     self.redirect('/serve/%s' % blob_info.key())
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
-  def get(self, resource):
-    resource = str(urllib.unquote(resource))
-    blob_info = blobstore.BlobInfo.get(resource)
-    self.send_blob(blob_info)
+  def get(self, blob_key):
+    blob_key = str(urllib.unquote(blob_key))
+    if not blobstore.get(blob_key):
+        self.error(404)
+    else:
+        self.send_blob(blobstore.BlobInfo.get(blob_key), save_as=True)
+
 
 
 application = webapp2.WSGIApplication([('/load', MainHandler),

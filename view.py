@@ -60,6 +60,7 @@ class View(webapp2.RequestHandler):
         qid = int(qid)
         question = models.Question.get_by_id(qid)
         qcontent = self.processContent(question.content)
+        print qcontent
         # question = models.Question.get_by_id(6410839984701440)
         query = models.Answer.query(models.Answer.qid==qid)
         fetch = query.fetch()
@@ -68,6 +69,7 @@ class View(webapp2.RequestHandler):
         for ans in show:
             acontent.append(self.processContent(ans.content))
         
+        # print acontent
         template_values = {'question': question, 'answers':show, 'qcontent': qcontent, 'acontent': acontent}
         template = JINJA_ENVIRONMENT.get_template('template/viewAQ.html')
         self.response.write(template.render(template_values))
@@ -76,27 +78,23 @@ class View(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('template/message.html')
         self.response.write(template.render(template_values))
         '''
-        
     
     def processContent(self, content):
+        # print content
         images = re.findall(r"(https?://[^\s]*\.jpg|https?://[^\s]*\.png|https?://[^\s]*\.gif)",content)
         for i in images:
             # print i
             replace = ' <img src="'+ i + '"/> '
             # print replace
-            content = content.replace(' '+i+' ',replace)
+            content = content.replace(i,replace)
         links = re.findall(r"https?://[^\s]*\.[^\s\"]*",content)
         for l in links:
             if l not in images:
                 replace = ' <a href="'+ l + '">' + l + '</a> '
                 # print l
                 # print replace
-                content = content.replace(' '+l+' ',replace)
+                content = content.replace(l+' ' ,replace)
         return content
-        
-            
-        
-    
     
 application = webapp2.WSGIApplication([
     ('/view', View),
